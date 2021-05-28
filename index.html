@@ -10,7 +10,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h4 class="text-center">Pokemons</h4>
+    <h4 class="text-center fs-1 fw-bold">Pokemons</h4>
     <div class="container">
         <div class="row">
             <div class="col-8">
@@ -18,18 +18,20 @@
                 </div>
             </div>
             <div class="col-4">
-                <p></p>
                 
+                <p><span id="name" class="d-inline ms-2 fs-1 fw-bold"></span></p>
                 <ul>
-                    <li>nombre:<span id="name"></span></li>
                     
-                    <li>foto:<span id="photo"></span></li>
                     
-                    <li>Types:<span id="type"></span></li>
+                    <li id="pokemonimg">foto:</li>
                     
-                    <li>height:<span id="height"></span></li>
+                    <li>Types:
+                        <ul id="types"></ul>
+                    </li>
                     
-                    <li>Weigth:<span id="weigth"></span></li>
+                    <li>height:<span id="height" class="d-inline ms-2"></span> inches</li>
+                    
+                    <li>Weigth:<span id="weight" class="d-inline ms-2"></span> KG</li>
                     
                 </ul>
             </div>
@@ -39,11 +41,30 @@
     </div>
     <script>
         for(i = 1; i < 152 ; i++){
-            $('#pokemones').append(`<div class="col-2"><img src="http://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${i}.png"></div>`)
+            $('#pokemones').append(`<div class="col-2"><img id="${i}" src="http://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${i}.png"></div>`)
         };
-        $('img').on('click',function(data){
-            const pokemon = $(this).val();
+        
+        $('img').on('click',function(){
+            const pokemon = $(this).attr("id");
             console.log(pokemon)
+            $.get('http://pokeapi.co/api/v2/pokemon/' + pokemon + '/', function(data){
+                console.log(data);
+                
+                $('#name').html(data.name);
+                $('#height').html(data.height);
+                $('#weight').html(data.weight);
+                $('#pokemonimg').html('<img src="http://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/' + pokemon + '.png">');
+                $('#types').html("")
+                for (typess of data.types) {
+                    $('#types').append(`<li>${typess.type.name}</li>`)
+                }
+            //for (i = 0 ; i <  ){};
+            
+            })
+            
+            
+        
+            
         }
         )
         
